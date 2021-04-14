@@ -1,0 +1,45 @@
+
+# A Python program to login continuously into a website and taking the coins by taking the emails and passwords from csv
+
+# Importing required packages
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
+import csv
+
+
+driver = webdriver.Chrome('D:\Compressed\chromedriver_win32\chromedriver') #Connect with chrome webdriver
+driver.get("your URL goes here") #Url where we will login
+
+count = 0
+# looping the login action with the emails in the email.csv file
+with open("D:\My LAB\Python\email.csv", 'r') as file:
+
+    csv_file = csv.reader(file)
+    for row in csv_file:
+        put1 = driver.find_element_by_id("loginUsername") #email field
+        put1.send_keys(row)
+
+        put2 = driver.find_element_by_id("loginPassword") #password field
+        put2.send_keys('Password Goes Here')
+
+        put1.send_keys(Keys.ENTER) #Submit the email and password
+        time.sleep(10) #wait 10s to fully load up the site.
+
+        x = driver.find_element_by_class_name("get") #search the class where to click
+        x.click()
+
+        time.sleep(10)
+
+        x1 = driver.find_element_by_class_name("user-email") 
+        x1.click()
+
+        time.sleep(5)
+
+        y = driver.find_element_by_id("headerLogoutButton") #click on log out button
+        y.click()
+
+        count = count+1
+
+        time.sleep(5)
+        print("Operation %s Successful" %count )
